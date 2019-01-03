@@ -12,7 +12,6 @@ export default createReducer({}, {
 })
 
 // Actions
-export const testAction = () => {
-  console.log('here')
-  return { type: TEST_REQUEST, payload: { message: 'it worked' } }
+export const testAction = () => async dispatch => {
+  dispatch({ type: TEST_REQUEST, payload: { message: 'it worked' } })
 }

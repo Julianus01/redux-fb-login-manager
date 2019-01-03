@@ -1,12 +1,14 @@
 import React from 'react'
 import * as testActions from '../ducks/testDuck'
 import { connect } from 'react-redux'
-import { bindActionCreators } from '../../../../../../Library/Caches/typescript/3.2/node_modules/redux';
+import { bindActionCreators } from 'redux'
+import styled from 'styled-components'
 
 const TestComponent = props => {
   console.log(props)
-  const testFunc = () => {
-    props.actions.testAction()
+  const testFunc = async () => {
+    await props.actions.testAction()
+    console.log('Second')
   }
 
   return (
