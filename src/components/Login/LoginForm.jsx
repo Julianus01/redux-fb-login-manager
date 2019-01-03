@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Icon, Input, Button, Row, Divider } from 'antd'
+import { Form, Icon, Input, Button, Divider } from 'antd'
 import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
 import { compose, bindActionCreators } from 'redux'
@@ -43,6 +43,20 @@ class LoginForm extends React.Component {
 
     return (
       <React.Fragment>
+        <GmailButton
+          icon='google'
+          onClick={this.loginWithGoogle}
+        >
+        </GmailButton>
+
+        <FacebookButton
+          icon='facebook'
+          onClick={this.loginWithFacebook}
+        >
+        </FacebookButton>
+
+        <Divider style={{ fontWeight: 300 }}>or</Divider>
+
         <Form onSubmit={this.validateFormAndLogin}>
           <FormItem>
             {getFieldDecorator('email', emailRules)(
@@ -68,22 +82,6 @@ class LoginForm extends React.Component {
             {!this.state.emailLoading && 'Login'}
           </LoginButton>
         </Form>
-
-        <Divider style={{ fontWeight: 300 }}>or</Divider>
-
-        <Row style={{ display: 'flex' }}>
-          <GmailButton
-            icon='google'
-            onClick={this.loginWithGoogle}
-          >
-          </GmailButton>
-
-          <FacebookButton
-            icon='facebook'
-            onClick={this.loginWithFacebook}
-          >
-          </FacebookButton>
-        </Row>
       </React.Fragment>
     )
   }
@@ -129,12 +127,11 @@ const LoginButton = styled(Button)`
 
 const GmailButton = styled(Button)`
   width: 100%;
-  margin-right: 8px;
+  margin-bottom: 16px;
 `
 
 const FacebookButton = styled(Button)`
   width: 100%;
-  margin-left: 8px;
 `
 
 export default compose(
