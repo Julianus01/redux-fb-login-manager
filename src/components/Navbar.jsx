@@ -2,8 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { Card, Row, Icon, Menu, Dropdown, Avatar } from 'antd'
 import { withRouter } from 'react-router-dom'
-import { compose } from 'redux'
+import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import * as userActions from '../state/ducks/userDuck'
 
 const menu = logout => (
   <Menu>
@@ -22,10 +23,10 @@ const menu = logout => (
   </Menu>
 )
 
-const Navbar = ({ user, authContainer, history }) => {
+const Navbar = ({ user, actions, authContainer, history }) => {
   const logout = async () => {
-    await authContainer.logout()
-    history.push('/login')
+    await actions.logout()
+    // history.push('/login')
   }
 
   return (
@@ -88,7 +89,10 @@ const MenuIcon = styled(Icon)`
 
 export default compose(
   connect(
-    state => ({ user: state.user })
+    state => ({ user: state.user }),
+    dispatch => ({
+      actions: bindActionCreators(userActions, dispatch)
+    })
   ),
   withRouter,
 )(Navbar)

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as userActions from '../../ducks/userDuck'
+import * as userActions from '../../state/ducks/userDuck'
 
 const emailRules = {
   rules: [
@@ -39,7 +39,6 @@ class LoginForm extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form
-    // console.log(this.props)
 
     return (
       <React.Fragment>
@@ -105,13 +104,11 @@ class LoginForm extends React.Component {
   }
 
   loginWithGoogle = async () => {
-    const { authContainer } = this.props
-    await authContainer.loginWithGoogle()
+    this.actions.loginWithGoogle()
   }
 
   loginWithFacebook = async () => {
-    const { authContainer } = this.props
-    await authContainer.loginWithFacebook()
+    this.actions.loginWithFacebook()
   }
 }
 
