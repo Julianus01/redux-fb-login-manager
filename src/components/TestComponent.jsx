@@ -2,7 +2,6 @@ import React from 'react'
 import * as testActions from '../ducks/testDuck'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import styled from 'styled-components'
 
 const TestComponent = props => {
   console.log(props)
