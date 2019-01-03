@@ -1,5 +1,6 @@
 import createReducer from '../utils/createReducer'
 import firebase from 'firebase'
+import { UserEndpoints } from '../../api'
 
 // Types
 const LOGIN_WITH_EMAIL_REQUEST = '[user] LOGIN_WITH_EMAIL_REQUEST'

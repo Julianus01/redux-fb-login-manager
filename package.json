@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "antd": "^3.11.6",
+    "axios": "^0.18.0",
     "firebase": "^5.7.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
@@ -20,6 +21,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:8000/api/v1",
   "eslintConfig": {
     "extends": "react-app"
   },
