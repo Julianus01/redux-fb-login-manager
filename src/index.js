@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import './fb_config'
 import { Provider } from 'react-redux'
 import store from './state/store'
-import { startListeningToAuthStateChanges } from './state/ducks/userDuck'
+import { startListeningToAuthStateChanges } from './state/ducks/authDuck'
 
 store.dispatch(startListeningToAuthStateChanges())
 

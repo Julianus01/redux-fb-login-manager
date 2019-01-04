@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as userActions from '../../state/ducks/userDuck'
+import * as userActions from '../../state/ducks/authDuck'
 
 const emailRules = {
   rules: [

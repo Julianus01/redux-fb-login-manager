@@ -16,13 +16,15 @@ const LOGOUT_SUCCESS = '[user] LOGOUT_SUCCESS'
 
 const AUTH_STATE_CHANGED = '[user] AUTH_STATE_CHANGED'
 
-const initialState = JSON.parse(localStorage.getItem('user'))
+const initialState = {
+  user: JSON.parse(localStorage.getItem('user'))
+}
 
 // Reducer
 export default createReducer(initialState)({
   [AUTH_STATE_CHANGED]: (state, action) => {
     const { user } = action.payload
-    return user
+    return { ...state, user }
   },
 })
 

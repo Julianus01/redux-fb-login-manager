@@ -1,5 +1,5 @@
-import user from './userDuck'
+import auth from './authDuck'
 
 export default {
-  user
+  auth
 }
