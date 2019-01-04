@@ -1,6 +1,5 @@
 import createReducer from '../utils/createReducer'
 import firebase from 'firebase'
-import { UserEndpoints } from '../../api'
 
 // Types
 const LOGIN_WITH_EMAIL_REQUEST = '[user] LOGIN_WITH_EMAIL_REQUEST'
@@ -30,10 +29,9 @@ export default createReducer(initialState)({
 // Action Creators
 export const loginWithEmailAndPassword = credentials => async dispatch => {
   try {
-    dispatch({ type: LOGIN_WITH_EMAIL_REQUEST })
+    dispatch(loginWithEmailRequest())
     await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password)
-    dispatch({ type: LOGIN_WITH_EMAIL_SUCCESS })
-    console.log('here')
+    dispatch(loginWithEmailSuccess())
   } catch (error) {
     console.log(error)
   }
@@ -42,9 +40,9 @@ export const loginWithEmailAndPassword = credentials => async dispatch => {
 export const loginWithGoogle = () => async dispatch => {
   try {
     const googleProvider = new firebase.auth.GoogleAuthProvider()
-    dispatch({ type: LOGIN_WITH_GMAIL_REQUEST })
+    dispatch(loginWithGmailRequest())
     await firebase.auth().signInWithPopup(googleProvider)
-    dispatch({ type: LOGIN_WITH_GMAIL_SUCCESS })
+    dispatch(loginWithGmailSuccess())
   } catch (error) {
     console.log(error)
   }
@@ -53,9 +51,9 @@ export const loginWithGoogle = () => async dispatch => {
 export const loginWithFacebook = () => async dispatch => {
   try {
     const facebookProvider = new firebase.auth.FacebookAuthProvider()
-    dispatch({ type: LOGIN_WITH_FACEBOOK_REQUEST })
+    dispatch(loginWithFacebookRequest())
     await firebase.auth().signInWithPopup(facebookProvider)
-    dispatch({ type: LOGIN_WITH_FACEBOOK_SUCCESS })
+    dispatch(loginWithFacebookSuccess())
   } catch (error) {
     console.log(error)
   }
@@ -63,9 +61,9 @@ export const loginWithFacebook = () => async dispatch => {
 
 export const logout = () => async dispatch => {
   try {
-    dispatch({ type: LOGOUT_REQUEST })
+    dispatch(logoutRequest())
     await firebase.auth().signOut()
-    dispatch({ type: LOGOUT_SUCCESS })
+    dispatch(logoutSuccess())
   } catch (error) {
     console.log(error)
   }
@@ -75,10 +73,28 @@ export const startListeningToAuthStateChanges = () => dispatch => {
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
       localStorage.setItem('user', JSON.stringify(user))
-      dispatch({ type: AUTH_STATE_CHANGED, payload: { user } })
+      dispatch(authStateChanged(user))
     } else {
       localStorage.removeItem('user')
-      dispatch({ type: AUTH_STATE_CHANGED, payload: { user: null } })
+      dispatch(authStateChanged(null))
     }
   })
 }
+
+// Actions
+const loginWithEmailRequest = () => ({ type: LOGIN_WITH_EMAIL_REQUEST })
+const loginWithEmailSuccess = () => ({ type: LOGIN_WITH_EMAIL_SUCCESS })
+
+const loginWithGmailRequest = () => ({ type: LOGIN_WITH_GMAIL_REQUEST })
+const loginWithGmailSuccess = () => ({ type: LOGIN_WITH_GMAIL_SUCCESS })
+
+const loginWithFacebookRequest = () => ({ type: LOGIN_WITH_FACEBOOK_REQUEST })
+const loginWithFacebookSuccess = () => ({ type: LOGIN_WITH_FACEBOOK_SUCCESS })
+
+const logoutRequest = () => ({ type: LOGOUT_REQUEST })
+const logoutSuccess = () => ({ type: LOGOUT_SUCCESS })
+
+const authStateChanged = user => ({
+  type: AUTH_STATE_CHANGED,
+  payload: { user }
+})
