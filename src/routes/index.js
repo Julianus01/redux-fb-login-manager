@@ -1,8 +1,6 @@
 // Components
 import React from 'react'
-// import LandingPage from '../components/LandingPage'
 import LoginPage from '../components/Pages/LoginPage'
-// import PostsPage from '../components/PostsPage'
 import HomePage from '../components/Pages/HomePage'
 
 // Custom routes
@@ -14,10 +12,8 @@ import { Switch } from 'react-router-dom'
 
 const Routes = () => (
   <Switch>
-    {/* <RedirectAuthed path='/' exact={true} component={LandingPage} /> */}
-    <RedirectAuthed path='/login' exact={true} component={LoginPage} />
-    {/* <AuthRoute path='/posts' exact={true} component={PostsPage} /> */}
     <AuthRoute path='/home' exact={true} component={HomePage} />
+    <RedirectAuthed path='/login' exact={true} component={LoginPage} />
     <NotFound path='*' exact={true} component={NotFound} />
   </Switch>
 )

@@ -1,20 +1,24 @@
 import createReducer from '../utils/createReducer'
 import firebase from 'firebase'
+import UserEndpoints from '../../api/UserEndpoints';
 
 // Types
-const LOGIN_WITH_EMAIL_REQUEST = '[user] LOGIN_WITH_EMAIL_REQUEST'
-const LOGIN_WITH_EMAIL_SUCCESS = '[user] LOGIN_WITH_EMAIL_SUCCESS'
+const LOGIN_WITH_EMAIL_REQUEST = '[auth] LOGIN_WITH_EMAIL_REQUEST'
+const LOGIN_WITH_EMAIL_SUCCESS = '[auth] LOGIN_WITH_EMAIL_SUCCESS'
 
-const LOGIN_WITH_GMAIL_REQUEST = '[user] LOGIN_WITH_GMAIL_REQUEST'
-const LOGIN_WITH_GMAIL_SUCCESS = '[user] LOGIN_WITH_GMAIL_SUCCESS'
+const LOGIN_WITH_GMAIL_REQUEST = '[auth] LOGIN_WITH_GMAIL_REQUEST'
+const LOGIN_WITH_GMAIL_SUCCESS = '[auth] LOGIN_WITH_GMAIL_SUCCESS'
 
-const LOGIN_WITH_FACEBOOK_REQUEST = '[user] LOGIN_WITH_FACEBOOK_REQUEST'
-const LOGIN_WITH_FACEBOOK_SUCCESS = '[user] LOGIN_WITH_FACEBOOK_SUCCESS'
+const LOGIN_WITH_FACEBOOK_REQUEST = '[auth] LOGIN_WITH_FACEBOOK_REQUEST'
+const LOGIN_WITH_FACEBOOK_SUCCESS = '[auth] LOGIN_WITH_FACEBOOK_SUCCESS'
 
-const LOGOUT_REQUEST = '[user] LOGOUT_REQUEST'
-const LOGOUT_SUCCESS = '[user] LOGOUT_SUCCESS'
+const CREATE_OR_UPDATE_USER_REQUEST = '[auth] CREATE_OR_UPDATE_USER_REQUEST'
+const CREATE_OR_UPDATE_USER_SUCCESS = '[auth] CREATE_OR_UPDATE_USER_SUCCESS'
 
-const AUTH_STATE_CHANGED = '[user] AUTH_STATE_CHANGED'
+const LOGOUT_REQUEST = '[auth] LOGOUT_REQUEST'
+const LOGOUT_SUCCESS = '[auth] LOGOUT_SUCCESS'
+
+const AUTH_STATE_CHANGED = '[auth] AUTH_STATE_CHANGED'
 
 const initialState = {
   user: JSON.parse(localStorage.getItem('user'))
@@ -34,6 +38,10 @@ export const loginWithEmailAndPassword = credentials => async dispatch => {
     dispatch(loginWithEmailRequest())
     await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password)
     dispatch(loginWithEmailSuccess())
+
+    // dispatch(createOrUpdateUserRequest())
+    // await UserEndpoints.createOrUpdateUser(response.user)
+    // dispatch(createOrUpdateUserSuccess())
   } catch (error) {
     console.log(error)
   }
@@ -43,8 +51,12 @@ export const loginWithGoogle = () => async dispatch => {
   try {
     const googleProvider = new firebase.auth.GoogleAuthProvider()
     dispatch(loginWithGmailRequest())
-    await firebase.auth().signInWithPopup(googleProvider)
+    const response = await firebase.auth().signInWithPopup(googleProvider)
     dispatch(loginWithGmailSuccess())
+
+    dispatch(createOrUpdateUserRequest())
+    await UserEndpoints.createOrUpdateUser(response.user)
+    dispatch(createOrUpdateUserSuccess())
   } catch (error) {
     console.log(error)
   }
@@ -92,6 +104,9 @@ const loginWithGmailSuccess = () => ({ type: LOGIN_WITH_GMAIL_SUCCESS })
 
 const loginWithFacebookRequest = () => ({ type: LOGIN_WITH_FACEBOOK_REQUEST })
 const loginWithFacebookSuccess = () => ({ type: LOGIN_WITH_FACEBOOK_SUCCESS })
+
+const createOrUpdateUserRequest = () => ({ type: CREATE_OR_UPDATE_USER_REQUEST })
+const createOrUpdateUserSuccess = () => ({ type: CREATE_OR_UPDATE_USER_SUCCESS })
 
 const logoutRequest = () => ({ type: LOGOUT_REQUEST })
 const logoutSuccess = () => ({ type: LOGOUT_SUCCESS })
