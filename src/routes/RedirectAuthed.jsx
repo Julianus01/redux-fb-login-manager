@@ -2,6 +2,7 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 import NoNavRoute from './NoNavRoute'
 import { connect } from 'react-redux'
+import { getUser } from '../state/selectors/authSelectors';
 
 const RedirectAuthed = ({ user, ...rest }) => {
   if (user)
@@ -10,6 +11,8 @@ const RedirectAuthed = ({ user, ...rest }) => {
   return <NoNavRoute {...rest} />
 }
 
-export default connect(
-  state => ({ user: state.auth.user })
-)(RedirectAuthed)
+const mapStateToProps = state => ({
+  user: getUser(state)
+})
+
+export default connect(mapStateToProps)(RedirectAuthed)

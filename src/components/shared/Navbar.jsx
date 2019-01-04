@@ -4,7 +4,7 @@ import { Card, Row, Icon, Menu, Dropdown, Avatar } from 'antd'
 import { withRouter } from 'react-router-dom'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as userActions from '../../state/ducks/authDuck'
+import * as authActions from '../../state/ducks/authDuck'
 import { getUser } from '../../state/selectors/authSelectors'
 
 const menu = logout => (
@@ -88,12 +88,15 @@ const MenuIcon = styled(Icon)`
   margin-right: 8px;
 `
 
+const mapStateToProps = state => ({
+  user: getUser(state)
+})
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(authActions, dispatch)
+})
+
 export default compose(
-  connect(
-    state => ({ user: getUser(state) }),
-    dispatch => ({
-      actions: bindActionCreators(userActions, dispatch)
-    })
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   withRouter,
 )(Navbar)

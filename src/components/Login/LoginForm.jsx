@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as userActions from '../../state/ducks/authDuck'
+import * as authActions from '../../state/ducks/authDuck'
 
 const emailRules = {
   rules: [
@@ -131,12 +131,11 @@ const FacebookButton = styled(Button)`
   width: 100%;
 `
 
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(authActions, dispatch)
+})
+
 export default compose(
-  connect(
-    null,
-    dispatch => ({
-      actions: bindActionCreators(userActions, dispatch)
-    })
-  ),
+  connect(null, mapDispatchToProps),
   withRouter,
 )((LoginForm = Form.create()(LoginForm)))
