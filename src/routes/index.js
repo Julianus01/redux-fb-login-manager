@@ -1,9 +1,9 @@
 // Components
 import React from 'react'
 // import LandingPage from '../components/LandingPage'
-import LoginPage from '../components/LoginPage'
+import LoginPage from '../components/Pages/LoginPage'
 // import PostsPage from '../components/PostsPage'
-import HomePage from '../components/HomePage'
+import HomePage from '../components/Pages/HomePage'
 
 // Custom routes
 import AuthRoute from './AuthRoute'

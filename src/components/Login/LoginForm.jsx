@@ -133,7 +133,7 @@ const FacebookButton = styled(Button)`
 
 export default compose(
   connect(
-    state => state,
+    null,
     dispatch => ({
       actions: bindActionCreators(userActions, dispatch)
     })

@@ -4,12 +4,13 @@ import { Card, Row, Icon, Menu, Dropdown, Avatar } from 'antd'
 import { withRouter } from 'react-router-dom'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as userActions from '../state/ducks/authDuck'
+import * as userActions from '../../state/ducks/authDuck'
+import { getUser } from '../../state/selectors/authSelectors'
 
 const menu = logout => (
   <Menu>
     <Menu.Item key='0'>
-      <a href='http://www.alipay.com/'>
+      <a role="button">
         <MenuIcon type='setting' />
         Settings
       </a>
@@ -89,7 +90,7 @@ const MenuIcon = styled(Icon)`
 
 export default compose(
   connect(
-    state => ({ user: state.auth.user }),
+    state => ({ user: getUser(state) }),
     dispatch => ({
       actions: bindActionCreators(userActions, dispatch)
     })

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import Navbar from '../components/Navbar'
+import Navbar from '../components/shared/Navbar'
 import styled from 'styled-components'
 
 export default props => (
