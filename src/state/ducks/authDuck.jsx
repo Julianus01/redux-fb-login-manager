@@ -95,6 +95,11 @@ export const startListeningToAuthStateChanges = () => dispatch => {
   })
 }
 
+export const testAction = () => dispatch => {
+  console.log('her')
+  dispatch({ type: 'Test' })
+}
+
 // Actions
 const loginWithEmailRequest = () => ({ type: LOGIN_WITH_EMAIL_REQUEST })
 const loginWithEmailSuccess = () => ({ type: LOGIN_WITH_EMAIL_SUCCESS })

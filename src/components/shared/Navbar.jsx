@@ -24,10 +24,9 @@ const menu = logout => (
   </Menu>
 )
 
-const Navbar = ({ user, actions, authContainer, history }) => {
+const Navbar = React.memo(({ user, actions }) => {
   const logout = async () => {
     await actions.logout()
-    // history.push('/login')
   }
 
   return (
@@ -42,8 +41,7 @@ const Navbar = ({ user, actions, authContainer, history }) => {
             trigger={['click']}
           >
             <div>
-              <Avatar
-                style={{ cursor: 'pointer' }}
+              <ProfileAvatar
                 icon='user'
                 src={user.photoURL}
               />
@@ -53,7 +51,7 @@ const Navbar = ({ user, actions, authContainer, history }) => {
       </BoxedRow>
     </Wrapper>
   )
-}
+})
 
 const Wrapper = styled(Card)`
   position: fixed;
@@ -86,6 +84,10 @@ const Right = styled.div`
 
 const MenuIcon = styled(Icon)`
   margin-right: 8px;
+`
+
+const ProfileAvatar = styled(Avatar)`
+  cursor: pointer;
 `
 
 const mapStateToProps = state => ({

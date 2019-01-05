@@ -10,6 +10,9 @@ import { startListeningToAuthStateChanges } from './state/ducks/authDuck'
 
 store.dispatch(startListeningToAuthStateChanges())
 
+const { whyDidYouUpdate } = require('why-did-you-update');
+whyDidYouUpdate(React);
+
 const RootHTML = () => (
   <Provider store={store}>
     <App />

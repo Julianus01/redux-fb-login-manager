@@ -3,14 +3,14 @@ import { Route } from 'react-router-dom'
 import Navbar from '../components/shared/Navbar'
 import styled from 'styled-components'
 
-export default props => (
+export default React.memo(props => (
   <React.Fragment>
     <Navbar />
     <Boxed>
       <Route {...props} />
     </Boxed>
   </React.Fragment>
-)
+))
 
 const Boxed = styled.section`
   max-width: 935px;

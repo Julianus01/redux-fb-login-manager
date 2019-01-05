@@ -26,33 +26,20 @@ const passwordRules = {
   ],
 }
 
-class LoginForm extends React.Component {
-  constructor(props) {
-    super(props)
+class LoginForm extends React.PureComponent {
 
-    this.state = {
-      emailLoading: false,
-    }
-
-    this.actions = this.props.actions
+  state = {
+    emailLoading: false,
   }
 
   render() {
     const { getFieldDecorator } = this.props.form
+    console.log('Login Form render')
 
     return (
       <React.Fragment>
-        <GmailButton
-          icon='google'
-          onClick={this.loginWithGoogle}
-        >
-        </GmailButton>
-
-        <FacebookButton
-          icon='facebook'
-          onClick={this.loginWithFacebook}
-        >
-        </FacebookButton>
+        <GmailButton icon='google' onClick={this.loginWithGoogle} />
+        <FacebookButton icon='facebook' onClick={this.loginWithFacebook} />
 
         <Divider style={{ fontWeight: 300 }}>or</Divider>
 
@@ -73,11 +60,7 @@ class LoginForm extends React.Component {
             )}
           </FormItem>
 
-          <LoginButton
-            type='primary'
-            htmlType='submit'
-            loading={this.state.emailLoading}
-          >
+          <LoginButton type='primary' htmlType='submit' loading={this.state.emailLoading} >
             {!this.state.emailLoading && 'Login'}
           </LoginButton>
         </Form>
@@ -97,39 +80,39 @@ class LoginForm extends React.Component {
   loginWithEmailAndPassword = async formData => {
     try {
       this.setState({ emailLoading: true })
-      await this.actions.loginWithEmailAndPassword(formData)
+      await this.props.actions.loginWithEmailAndPassword(formData)
     } catch (error) {
       this.setState({ emailLoading: false })
     }
   }
 
   loginWithGoogle = async () => {
-    this.actions.loginWithGoogle()
+    this.props.actions.loginWithGoogle()
   }
 
   loginWithFacebook = async () => {
-    this.actions.loginWithFacebook()
+    this.props.actions.loginWithFacebook()
   }
 }
 
 const FormItem = Form.Item
 
 const InputIcon = styled(Icon)`
-  color: rgba(0, 0, 0, 0.25);
-`
+          color: rgba(0, 0, 0, 0.25);
+        `
 
 const LoginButton = styled(Button)`
-  width: 100%;
-`
+          width: 100%;
+        `
 
 const GmailButton = styled(Button)`
-  width: 100%;
-  margin-bottom: 16px;
-`
+          width: 100%;
+          margin-bottom: 16px;
+        `
 
 const FacebookButton = styled(Button)`
-  width: 100%;
-`
+          width: 100%;
+        `
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(authActions, dispatch)

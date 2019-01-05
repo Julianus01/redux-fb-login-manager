@@ -4,12 +4,12 @@ import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getUser } from '../state/selectors/authSelectors';
 
-const AuthRoute = ({ user, ...rest }) => {
+const AuthRoute = React.memo(({ user, ...rest }) => {
   if (!user)
     return <Redirect to='login' />
 
   return <NavRoute {...rest} />
-}
+})
 
 const mapStateToProps = state => ({
   user: getUser(state)
