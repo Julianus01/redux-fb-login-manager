@@ -4,16 +4,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
 import * as authActions from '../../state/ducks/authDuck'
 
-const HomePage = ({ user, actions }) => {
-  console.log('Home render')
-
-  return (
-    <div>
-      <p>Home Page bici</p>
-      <button onClick={actions.testAction}>press me</button>
-    </div>
-  )
-}
+const HomePage = ({ user, actions }) => (
+  <p>Hello: {user.email}</p>
+)
 
 const mapStateToProps = state => ({
   user: getUser(state)

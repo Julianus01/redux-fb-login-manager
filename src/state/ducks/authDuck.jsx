@@ -3,20 +3,20 @@ import firebase from 'firebase'
 import UserEndpoints from '../../api/UserEndpoints';
 
 // Types
-const LOGIN_WITH_EMAIL_REQUEST = '[auth] LOGIN_WITH_EMAIL_REQUEST'
-const LOGIN_WITH_EMAIL_SUCCESS = '[auth] LOGIN_WITH_EMAIL_SUCCESS'
+const LOGIN_WITH_EMAIL_REQUEST = '[auth] LOGIN_WITH_EMAIL / REQUEST'
+const LOGIN_WITH_EMAIL_SUCCESS = '[auth] LOGIN_WITH_EMAIL / SUCCESS'
 
-const LOGIN_WITH_GMAIL_REQUEST = '[auth] LOGIN_WITH_GMAIL_REQUEST'
-const LOGIN_WITH_GMAIL_SUCCESS = '[auth] LOGIN_WITH_GMAIL_SUCCESS'
+const LOGIN_WITH_GMAIL_REQUEST = '[auth] LOGIN_WITH_GMAIL / REQUEST'
+const LOGIN_WITH_GMAIL_SUCCESS = '[auth] LOGIN_WITH_GMAIL / SUCCESS'
 
-const LOGIN_WITH_FACEBOOK_REQUEST = '[auth] LOGIN_WITH_FACEBOOK_REQUEST'
-const LOGIN_WITH_FACEBOOK_SUCCESS = '[auth] LOGIN_WITH_FACEBOOK_SUCCESS'
+const LOGIN_WITH_FACEBOOK_REQUEST = '[auth] LOGIN_WITH_FACEBOOK / REQUEST'
+const LOGIN_WITH_FACEBOOK_SUCCESS = '[auth] LOGIN_WITH_FACEBOOK / SUCCESS'
 
-const CREATE_OR_UPDATE_USER_REQUEST = '[auth] CREATE_OR_UPDATE_USER_REQUEST'
-const CREATE_OR_UPDATE_USER_SUCCESS = '[auth] CREATE_OR_UPDATE_USER_SUCCESS'
+const UPDATE_USER_DATA_REQUEST = '[auth] UPDATE_USER_DATA / REQUEST'
+const UPDATE_USER_DATA_SUCCESS = '[auth] UPDATE_USER_DATA / SUCCESS'
 
-const LOGOUT_REQUEST = '[auth] LOGOUT_REQUEST'
-const LOGOUT_SUCCESS = '[auth] LOGOUT_SUCCESS'
+const LOGOUT_REQUEST = '[auth] LOGOUT / REQUEST'
+const LOGOUT_SUCCESS = '[auth] LOGOUT / SUCCESS'
 
 const AUTH_STATE_CHANGED = '[auth] AUTH_STATE_CHANGED'
 
@@ -36,12 +36,10 @@ export default createReducer(initialState)({
 export const loginWithEmailAndPassword = credentials => async dispatch => {
   try {
     dispatch(loginWithEmailRequest())
-    await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password)
+    const response = await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password)
     dispatch(loginWithEmailSuccess())
 
-    // dispatch(createOrUpdateUserRequest())
-    // await UserEndpoints.createOrUpdateUser(response.user)
-    // dispatch(createOrUpdateUserSuccess())
+    await dispatch(updateUserData(response.user))
   } catch (error) {
     console.log(error)
   }
@@ -50,13 +48,12 @@ export const loginWithEmailAndPassword = credentials => async dispatch => {
 export const loginWithGoogle = () => async dispatch => {
   try {
     const googleProvider = new firebase.auth.GoogleAuthProvider()
+
     dispatch(loginWithGmailRequest())
     const response = await firebase.auth().signInWithPopup(googleProvider)
     dispatch(loginWithGmailSuccess())
 
-    dispatch(createOrUpdateUserRequest())
-    await UserEndpoints.createOrUpdateUser(response.user)
-    dispatch(createOrUpdateUserSuccess())
+    await dispatch(updateUserData(response.user))
   } catch (error) {
     console.log(error)
   }
@@ -65,9 +62,22 @@ export const loginWithGoogle = () => async dispatch => {
 export const loginWithFacebook = () => async dispatch => {
   try {
     const facebookProvider = new firebase.auth.FacebookAuthProvider()
+
     dispatch(loginWithFacebookRequest())
-    await firebase.auth().signInWithPopup(facebookProvider)
+    const response = await firebase.auth().signInWithPopup(facebookProvider)
     dispatch(loginWithFacebookSuccess())
+
+    await dispatch(updateUserData(response.user))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const updateUserData = user => async dispatch => {
+  try {
+    dispatch(updateUserDataRequest())
+    await UserEndpoints.updateUserData(user)
+    dispatch(updateUserDataSuccess())
   } catch (error) {
     console.log(error)
   }
@@ -95,11 +105,6 @@ export const startListeningToAuthStateChanges = () => dispatch => {
   })
 }
 
-export const testAction = () => dispatch => {
-  console.log('her')
-  dispatch({ type: 'Test' })
-}
-
 // Actions
 const loginWithEmailRequest = () => ({ type: LOGIN_WITH_EMAIL_REQUEST })
 const loginWithEmailSuccess = () => ({ type: LOGIN_WITH_EMAIL_SUCCESS })
@@ -110,8 +115,8 @@ const loginWithGmailSuccess = () => ({ type: LOGIN_WITH_GMAIL_SUCCESS })
 const loginWithFacebookRequest = () => ({ type: LOGIN_WITH_FACEBOOK_REQUEST })
 const loginWithFacebookSuccess = () => ({ type: LOGIN_WITH_FACEBOOK_SUCCESS })
 
-const createOrUpdateUserRequest = () => ({ type: CREATE_OR_UPDATE_USER_REQUEST })
-const createOrUpdateUserSuccess = () => ({ type: CREATE_OR_UPDATE_USER_SUCCESS })
+const updateUserDataRequest = () => ({ type: UPDATE_USER_DATA_REQUEST })
+const updateUserDataSuccess = () => ({ type: UPDATE_USER_DATA_SUCCESS })
 
 const logoutRequest = () => ({ type: LOGOUT_REQUEST })
 const logoutSuccess = () => ({ type: LOGOUT_SUCCESS })

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form, Icon, Input, Button, Divider } from 'antd'
 import styled from 'styled-components'
-import { withRouter } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as authActions from '../../state/ducks/authDuck'
@@ -34,7 +34,6 @@ class LoginForm extends React.PureComponent {
 
   render() {
     const { getFieldDecorator } = this.props.form
-    console.log('Login Form render')
 
     return (
       <React.Fragment>
@@ -44,13 +43,13 @@ class LoginForm extends React.PureComponent {
         <Divider style={{ fontWeight: 300 }}>or</Divider>
 
         <Form onSubmit={this.validateFormAndLogin}>
-          <FormItem>
+          <Form.Item>
             {getFieldDecorator('email', emailRules)(
               <Input placeholder='Email' prefix={<InputIcon type='mail' />} />
             )}
-          </FormItem>
+          </Form.Item>
 
-          <FormItem>
+          <Form.Item>
             {getFieldDecorator('password', passwordRules)(
               <Input
                 prefix={<InputIcon type='lock' />}
@@ -58,11 +57,13 @@ class LoginForm extends React.PureComponent {
                 placeholder='Password'
               />
             )}
-          </FormItem>
+          </Form.Item>
 
           <LoginButton type='primary' htmlType='submit' loading={this.state.emailLoading} >
             {!this.state.emailLoading && 'Login'}
           </LoginButton>
+
+          <Link to="/register">register now!</Link>
         </Form>
       </React.Fragment>
     )
@@ -95,24 +96,22 @@ class LoginForm extends React.PureComponent {
   }
 }
 
-const FormItem = Form.Item
-
 const InputIcon = styled(Icon)`
-          color: rgba(0, 0, 0, 0.25);
-        `
+  color: rgba(0, 0, 0, 0.25);
+`
 
 const LoginButton = styled(Button)`
-          width: 100%;
-        `
+  width: 100%;
+`
 
 const GmailButton = styled(Button)`
-          width: 100%;
-          margin-bottom: 16px;
-        `
+  width: 100%;
+  margin-bottom: 16px;
+`
 
 const FacebookButton = styled(Button)`
-          width: 100%;
-        `
+  width: 100%;
+`
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(authActions, dispatch)
@@ -120,5 +119,4 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   connect(null, mapDispatchToProps),
-  withRouter,
 )((LoginForm = Form.create()(LoginForm)))

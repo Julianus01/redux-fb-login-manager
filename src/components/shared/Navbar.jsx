@@ -90,6 +90,8 @@ const ProfileAvatar = styled(Avatar)`
   cursor: pointer;
 `
 
+
+
 const mapStateToProps = state => ({
   user: getUser(state)
 })
