@@ -78,7 +78,7 @@ class RegisterForm extends React.PureComponent {
           </Form.Item>
 
           <RegisterButton type='primary' htmlType='submit' loading={this.state.registerLoading} >
-            {!this.state.emailLoading && 'Register'}
+            {!this.state.registerLoading && 'Register'}
           </RegisterButton>
 
           <Link to="/login">login here</Link>
@@ -121,7 +121,15 @@ class RegisterForm extends React.PureComponent {
   }
 
   register = async formData => {
-    console.log(formData)
+    try {
+      this.setState({ registerLoading: true })
+
+      const { email, password } = formData
+      await this.props.actions.register({ email, password })
+    } catch (error) {
+      this.setState({ registerLoading: false })
+      console.log('Got error when registering: ', error)
+    }
   }
 }
 

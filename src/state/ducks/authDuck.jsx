@@ -12,6 +12,9 @@ const LOGIN_WITH_GMAIL_SUCCESS = '[auth] LOGIN_WITH_GMAIL / SUCCESS'
 const LOGIN_WITH_FACEBOOK_REQUEST = '[auth] LOGIN_WITH_FACEBOOK / REQUEST'
 const LOGIN_WITH_FACEBOOK_SUCCESS = '[auth] LOGIN_WITH_FACEBOOK / SUCCESS'
 
+const REGISTER_REQUEST = '[auth] REGISTER / REQUEST'
+const REGISTER_SUCCESS = '[auth] REGISTER / SUCCESS'
+
 const UPDATE_USER_DATA_REQUEST = '[auth] UPDATE_USER_DATA / REQUEST'
 const UPDATE_USER_DATA_SUCCESS = '[auth] UPDATE_USER_DATA / SUCCESS'
 
@@ -35,11 +38,14 @@ export default createReducer(initialState)({
 // Action Creators
 export const loginWithEmailAndPassword = credentials => async dispatch => {
   try {
+    const { email, password } = credentials
+
     dispatch(loginWithEmailRequest())
-    const response = await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password)
+    const response = await firebase.auth().signInWithEmailAndPassword(email, password)
     dispatch(loginWithEmailSuccess())
 
     await dispatch(updateUserData(response.user))
+    return response
   } catch (error) {
     console.log(error)
   }
@@ -70,6 +76,21 @@ export const loginWithFacebook = () => async dispatch => {
     await dispatch(updateUserData(response.user))
   } catch (error) {
     console.log(error)
+  }
+}
+
+export const register = credentials => async dispatch => {
+  try {
+    const { email, password } = credentials
+
+    dispatch(registerRequest())
+    const response = await firebase.auth().createUserWithEmailAndPassword(email, password)
+    dispatch(registerSuccess())
+
+    await dispatch(updateUserData(response.user))
+  } catch (error) {
+    console.log(error)
+    throw error
   }
 }
 
@@ -114,6 +135,9 @@ const loginWithGmailSuccess = () => ({ type: LOGIN_WITH_GMAIL_SUCCESS })
 
 const loginWithFacebookRequest = () => ({ type: LOGIN_WITH_FACEBOOK_REQUEST })
 const loginWithFacebookSuccess = () => ({ type: LOGIN_WITH_FACEBOOK_SUCCESS })
+
+const registerRequest = () => ({ type: REGISTER_REQUEST })
+const registerSuccess = () => ({ type: REGISTER_SUCCESS })
 
 const updateUserDataRequest = () => ({ type: UPDATE_USER_DATA_REQUEST })
 const updateUserDataSuccess = () => ({ type: UPDATE_USER_DATA_SUCCESS })
